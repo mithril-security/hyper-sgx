@@ -2,7 +2,13 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::error::Error as StdError;
 use std::fmt;
 use std::ops::{Deref, DerefMut};
-use std::sync::{Arc, Mutex, Weak};
+use std::sync::{Arc, Weak};
+
+#[cfg(not(target_env = "sgx"))]
+use std::sync::Mutex;
+
+#[cfg(target_env = "sgx")]
+use std::sync::SgxMutex as Mutex;
 
 #[cfg(not(feature = "runtime"))]
 use std::time::{Duration, Instant};

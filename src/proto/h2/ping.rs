@@ -25,7 +25,14 @@ use std::fmt;
 use std::future::Future;
 #[cfg(feature = "runtime")]
 use std::pin::Pin;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+
+#[cfg(not(target_env = "sgx"))]
+use std::sync::Mutex;
+
+#[cfg(target_env = "sgx")]
+use std::sync::SgxMutex as Mutex;
+
 use std::task::{self, Poll};
 use std::time::Duration;
 #[cfg(not(feature = "runtime"))]
